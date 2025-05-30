@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="mb-5">
+    <div class="post-header mb-4">
+        <h1 class="display-4">{{ post.title }}</h1>
+        <div class="d-flex gap-3 text-muted mb-3">
+            <span><i class="fas fa-user"></i> {{ post.author }}</span>
+            <span><i class="fas fa-calendar-alt"></i> {{ post.date.strftime('%d.%m.%Y %H:%M') }}</span>
+        </div>
+        <img src="{{ url_for('static', filename='images/' + post.image_id) }}"
+             class="img-fluid rounded-3 mb-4"
+             alt="Изображение поста">
+    </div>
+
+    <div class="post-content mb-5 fs-5">
+        {{ post.text }}
+    </div>
+
+    <section class="comments">
+        <h3 class="mb-4">Комментарии ({{ post.comments|length }})</h3>
+
+        <form method="POST" class="mb-5">
+            <div class="mb-3">
+                <textarea class="form-control"
+                          name="comment_text"
+                          rows="3"
+                          placeholder="Напишите ваш комментарий..."
+                          required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane me-2"></i>Отправить
+            </button>
+        </form>
+
+        <div class="comments-list">
+            {% for comment in post.comments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title mb-0">{{ comment.author }}</h5>
+                        <small class="text-muted">{{ comment.date.strftime('%d.%m.%Y %H:%M') }}</small>
+                    </div>
+                    <p class="card-text">{{ comment.text }}</p>
+
+                    {% if comment.replies %}
+                    <div class="replies ms-4 mt-3">
+                        {% for reply in comment.replies %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="card-subtitle mb-0">{{ reply.author }}</h6>
+                                    <small class="text-muted">{{ reply.date.strftime('%d.%m.%Y %H:%M') }}</small>
+                                </div>
+                                <p class="card-text">{{ reply.text }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</article>
+{% endblock %}

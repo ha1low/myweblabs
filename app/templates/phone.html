@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Проверка номера телефона</h1>
+
+    <form method="POST" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Номер телефона</label>
+            <input type="text"
+                   name="phone"
+                   class="form-control {% if error %}is-invalid{% endif %}"
+                   value="{{ phone_number or '' }}"
+                   required>
+
+            {% if error == 'invalid_chars' %}
+            <div class="invalid-feedback">
+                Недопустимый ввод. В номере встречаются недопустимые символы.
+            </div>
+            {% elif error == 'invalid_length' %}
+            <div class="invalid-feedback">
+                Недопустимый ввод. Неверное количество цифр.
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Проверить</button>
+    </form>
+
+    {% if formatted_number %}
+    <div class="mt-4 p-3 bg-success text-white rounded">
+        <h4>Форматированный номер:</h4>
+        <p class="mb-0">{{ formatted_number }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

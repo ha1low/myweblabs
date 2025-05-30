@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Параметры URL</h1>
+    <pre>{{ url_args }}</pre>
+    
+    <a href="{{ url_for('form_example') }}" class="btn btn-secondary mt-3">
+        К примеру формы
+    </a>
+</div>
+{% endblock %}
